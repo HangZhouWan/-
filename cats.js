@@ -137,12 +137,12 @@ function posOut(){
 				posList.splice(pos,1);
 			}
 	}
-	//中奖函数 产生随机数1~100 若小于5，绘制红包
+	//中奖函数 产生随机数1~100 若小于等于10，绘制红包
 	function win(){
 		cat.removeEventListener("click",win,false);
 		var rand = Math.round(Math.random()*100);
 		console.log(rand);
-		if(rand<5){
+		if(rand<=10){
 			alert("恭喜抽中红包~！");
 			var posX = (document.documentElement.clientWidth/2)-35;
 			var posY = document.documentElement.clientHeight/2;
