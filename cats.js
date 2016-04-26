@@ -152,11 +152,6 @@ function posOut(){
 			Coupon.style.cssText = "position:absolute;top:"+posY+"px;left:"+posX+"px;height:70px;width:70px;cursor:pointer;";
 			clearInterval(gameTime);
 			clearInterval(countTime);
-			Coupon.addEventListener("click",openCoupon,false);
-			document.body.appendChild(Coupon);
-			var CouponWidth = parseInt(Coupon.style.width);
-			var CouponHeight = parseInt(Coupon.style.height);
-			console.log(CouponWidth,CouponHeight);
 			function openCoupon(){
 				Coupon.removeEventListener("click",openCoupon,false);
 				Coupon.grow = setInterval(CouponCome,5)
@@ -170,6 +165,12 @@ function posOut(){
 					clearInterval(Coupon.grow);
 				}
 			}
+			Coupon.addEventListener("click",openCoupon,false);
+			document.body.appendChild(Coupon);
+			var CouponWidth = parseInt(Coupon.style.width);
+			var CouponHeight = parseInt(Coupon.style.height);
+			console.log(CouponWidth,CouponHeight);
+			
 		}
 			
     }
