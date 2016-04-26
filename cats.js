@@ -113,6 +113,7 @@ function posOut(){
 	}
 	//等待0.5s 执行猫猫下降函数
 	function Interval(){
+		clearInterval(cat.down);
 		cat.down = setInterval(catsDown,2);
 	}
 	function catsDown(){
