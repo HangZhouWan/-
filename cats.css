@@ -11,6 +11,7 @@ body{
 	text-align:center;
 	margin-top:3%;
 	display:flex;
+	display: -ms-flexbox; /* IE10 */ 
 	justify-content:center;
 	align-content:center;
 }
