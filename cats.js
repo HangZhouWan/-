@@ -159,7 +159,7 @@ function posOut(){
 			var CouponHeight = parseInt(Coupon.style.height);
 			var left = parseInt(Coupon.style.left);
 			function CouponCome(){
-				left = left - 1;
+				left = left - 0.5;
 				CouponWidth = CouponWidth+1;
 				CouponHeight = CouponHeight+1;
 				Coupon.style.width = CouponWidth+"px";
