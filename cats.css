@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	display:flex;
+	justify-content:center;
+	align-content:center;
+	background-color:#666666;
+	font-size:35px;
+	color:white;
+}
+div{
+	height:50%;
+	width:30%;
+	text-align:center;
+	margin-top:10%
+}
+#counter{
+	font-size:5em;
+}
+
+.foot{
+	font-size:0.5em;
+	margin-top:50px;
+	width:100%;
+}
