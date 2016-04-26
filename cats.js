@@ -25,13 +25,13 @@ function readyToStart(){
 			document.getElementById("container").innerHTML = "";
 			var progress = document.createElement("div");
 			renderTable();
-			countTime = setInterval(posOut,500);
-			gameTime = setInterval(gameProgress,200);
+			countTime = setInterval(posOut,500); //产生随机数 绘制猫猫
+			gameTime = setInterval(gameProgress,200); //游戏计时
 		}
 	},1000);
 	
 }
-//表格处理
+//表格绘制
 function renderTable(){
 	var width = document.documentElement.clientWidth;
 	var height = document.documentElement.clientHeight;
@@ -53,7 +53,7 @@ function renderTable(){
 	}
 	table.appendChild(tbody);
 	document.getElementById("container").appendChild(table);
-	// 为表格添加Id 
+	// 为表格单元格添加Id 
 	(function tableID(){
 		var td = table.getElementsByTagName("td"),len = td.length;
 		for(var i = 0;i<len;i++){
@@ -143,7 +143,6 @@ function posOut(){
 		var rand = Math.round(Math.random()*100);
 		console.log(rand);
 		if(rand<10){
-			alert("恭喜抽中红包~！");
 			var posX = (document.documentElement.clientWidth/2)-35;
 			var posY = document.documentElement.clientHeight/2;
 			console.log(posX,posY);
