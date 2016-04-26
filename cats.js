@@ -98,6 +98,7 @@ function posOut(){
 		cat.src = "cat.png";
 		td[pos].appendChild(cat);
 		var flag = false;
+		cat.addEventListener("click",Interval,false);//点击之后 猫猫下降；
 		cat.addEventListener("click",win,false);// 绑定中奖函数；
 		cat.grow = setInterval(growUpCat,2)
 	}
