@@ -25,7 +25,7 @@ function readyToStart(){
 			document.getElementById("container").innerHTML = "";
 			var progress = document.createElement("div");
 			renderTable();
-			countTime = setInterval(posOut,500); //产生随机数 绘制猫猫
+			countTime = setInterval(posOut,400); //产生随机数 绘制猫猫
 			gameTime = setInterval(gameProgress,200); //游戏计时
 		}
 	},1000);
@@ -74,7 +74,7 @@ function posOut(){
 	var td = document.getElementsByTagName("td");
 	var hole = document.createElement("div");
 	var cat = document.createElement("img");
-	hole.style.cssText = "position:absolute;height:1px;width:10px; border-radius:100px/30px;bottom:0;background-color:black;"; 
+	hole.style.cssText = "position:absolute;height:1px;width:10px; border-radius:100px/30px;bottom:0;background-color:black;opacity:1;"; 
 	if(td[pos].firstChild==null){
 		td[pos].appendChild(hole);
 		hole.growUp = setInterval(holeGrowUp,10);
@@ -113,7 +113,10 @@ function posOut(){
 	}
 	//等待0.5s 执行猫猫下降函数
 	function Interval(){
-		clearInterval(cat.down);
+		clearInterval(cat.grow);
+		if(cat.down){
+			clearInterval(cat.down);
+		}
 		cat.down = setInterval(catsDown,2);
 	}
 	function catsDown(){
@@ -127,12 +130,16 @@ function posOut(){
 	}
 	//猫猫隐藏，执行猫洞收缩函数
 	function holesDown(){
+		var opacity = parseFloat(hole.style.opacity);
 		var width = parseInt(hole.style.width);
 		var height = parseInt(hole.style.height);
 			width = width-3;
 			height = height-1;
+			opacity = (opacity*100 - 3)/100
 			hole.style.width = width+"px";
 			hole.style.height = height+"px";
+			hole.style.opacity = opacity;
+			console.log(opacity);
 			if(width ==1){
 				clearInterval(hole.down);
 				td[pos].innerHTML = "";
