@@ -155,19 +155,22 @@ function posOut(){
 				Coupon.removeEventListener("click",openCoupon,false);
 				Coupon.grow = setInterval(CouponCome,5)
 			}
+			var CouponWidth = parseInt(Coupon.style.width);
+			var CouponHeight = parseInt(Coupon.style.height);
+			var left = parseInt(Coupon.style.left);
 			function CouponCome(){
+				left = left - 1;
 				CouponWidth = CouponWidth+1;
 				CouponHeight = CouponHeight+1;
 				Coupon.style.width = CouponWidth+"px";
 				Coupon.style.height = CouponHeight+"px";
+				Coupon.style.left = left+"px";
 				if(CouponWidth==150){
 					clearInterval(Coupon.grow);
 				}
 			}
 			Coupon.addEventListener("click",openCoupon,false);
 			document.body.appendChild(Coupon);
-			var CouponWidth = parseInt(Coupon.style.width);
-			var CouponHeight = parseInt(Coupon.style.height);
 			console.log(CouponWidth,CouponHeight);
 			
 		}
