@@ -94,7 +94,7 @@ function posOut(){
 	}
 	//猫洞结束调用猫猫上升函数
 	function creatCat(){
-		cat.style.cssText = "position:absolute;bottom:-80px;left:20px" 
+		cat.style.cssText = "position:absolute;bottom:-80px;left:20px;cursor:pointer;" 
 		cat.src = "cat.png";
 		td[pos].appendChild(cat);
 		var flag = false;
@@ -137,19 +137,19 @@ function posOut(){
 				posList.splice(pos,1);
 			}
 	}
-	//中奖函数 产生随机数1~100 若小于等于10，绘制红包
+	//中奖函数 产生随机数1~100 若小于等于10，则中奖，绘制红包
 	function win(){
 		cat.removeEventListener("click",win,false);
 		var rand = Math.round(Math.random()*100);
 		console.log(rand);
-		if(rand<=10){
+		if(rand<10){
 			alert("恭喜抽中红包~！");
 			var posX = (document.documentElement.clientWidth/2)-35;
 			var posY = document.documentElement.clientHeight/2;
 			console.log(posX,posY);
 			var Coupon = document.createElement("img");
 			Coupon.src = "Coupon.png";
-			Coupon.style.cssText = "position:absolute;top:"+posY+"px;left:"+posX+"px;height:70px;width:70px;";
+			Coupon.style.cssText = "position:absolute;top:"+posY+"px;left:"+posX+"px;height:70px;width:70px;cursor:pointer;";
 			clearInterval(gameTime);
 			clearInterval(countTime);
 			Coupon.addEventListener("click",openCoupon,false);
