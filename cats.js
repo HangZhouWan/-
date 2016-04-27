@@ -30,11 +30,11 @@ var EventUtil = {
 }
 		
 
-var Map = new Array();
-var posList = [0,9,3];
-var countTime = null; 
-var gameTime = null;
-var readyTime = null;
+var Map = new Array();   //随机数组来源（表格ID组成的数组）
+var posList = [0,9,3];  //初始化随机数组
+var countTime = null; //计算随机数intervalID
+var gameTime = null;  //计算游戏时间intervalID
+var readyTime = null;  //计算倒计时intervalID
 
 function init(){
 	var btn = document.querySelector("button");
@@ -60,7 +60,7 @@ function readyToStart(){
 	},1000);
 	
 }
-//表格绘制
+//表格绘制，并将表格id加入Map数组
 function renderTable(){
 	var width = document.documentElement.clientWidth;
 	var height = document.documentElement.clientHeight;
@@ -92,7 +92,7 @@ function renderTable(){
 	})();
 }
 
-
+//随机计算产生猫猫的td单元格Id
 function posOut(){
 	var randomNum = Math.round(Math.random()*(Map.length-1));
 	var condition = posList.indexOf(randomNum);
@@ -103,7 +103,8 @@ function posOut(){
 	var td = document.getElementsByTagName("td");
 	var hole = document.createElement("div");
 	var cat = document.createElement("img");
-	hole.style.cssText = "position:absolute;height:1px;width:10px; border-radius:100px/30px;bottom:0;background-color:black;opacity:1;"; 
+	hole.style.cssText = "position:absolute;height:1px;width:10px; border-radius:100px/30px;bottom:0;background-color:black;opacity:1;";
+	//数组去重 
 	if(td[pos].firstChild==null){
 		td[pos].appendChild(hole);
 		hole.growUp = setInterval(holeGrowUp,10);
@@ -127,7 +128,7 @@ function posOut(){
 		cat.src = "cat.png";
 		td[pos].appendChild(cat);
 		var flag = false;
-		EventUtil.addHandler(cat,"click",Interval);//点击之后 猫猫下降；
+		EventUtil.addHandler(cat,"click",catWait);//点击之后 猫猫下降；
 		EventUtil.addHandler(cat,"click",win);// 绑定中奖函数；
 		cat.grow = setInterval(growUpCat,2)
 	}
@@ -137,11 +138,11 @@ function posOut(){
 		cat.style.bottom = bottom+"px";
 		if(bottom == 2){
 			clearInterval(cat.grow);
-			setTimeout(Interval,500);		
+			setTimeout(catWait,500);		
 		}
 	}
 	//等待0.5s 执行猫猫下降函数
-	function Interval(){
+	function catWait(){
 		clearInterval(cat.grow);
 		if(cat.down){
 			clearInterval(cat.down);
@@ -178,16 +179,15 @@ function posOut(){
 	function win(){
 		EventUtil.removeHandler(cat,"click",win); //移除绑定点击事件，每个猫猫只能点击一次；
 		var rand = Math.round(Math.random()*100);
-		console.log(rand);
 		if(rand<10){
+			clearInterval(gameTime);
+			clearInterval(countTime);
 			var posX = (document.documentElement.clientWidth/2)-35;
 			var posY = document.documentElement.clientHeight/2;
-			console.log(posX,posY);
 			var Coupon = document.createElement("img");
 			Coupon.src = "Coupon.png";
 			Coupon.style.cssText = "position:absolute;top:"+posY+"px;left:"+posX+"px;height:70px;width:70px;cursor:pointer;";
-			clearInterval(gameTime);
-			clearInterval(countTime);
+			document.body.appendChild(Coupon);
 			function openCoupon(){
 				Coupon.removeEventListener("click",openCoupon,false);
 				Coupon.grow = setInterval(CouponCome,5)
@@ -203,11 +203,11 @@ function posOut(){
 				Coupon.style.height = CouponHeight+"px";
 				Coupon.style.left = left+"px";
 				if(CouponWidth==150){
-					clearInterval(Coupon.grow);
-				}
+					console.log("中奖了！");
+	                clearInterval(Coupon.grow);
+				} 
 			}
 			EventUtil.addHandler(Coupon,"click",openCoupon);//红包点击打开
-			document.body.appendChild(Coupon);
 			
 		}
 			
@@ -224,6 +224,7 @@ function gameProgress(){
 	if(time == 0){
 		clearInterval(countTime);
 		clearInterval(gameTime);
+		console.log("很遗憾，没中奖");
 	}
 }
 
