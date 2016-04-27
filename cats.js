@@ -3,6 +3,32 @@ window.onload = function(){
 	BtnHandle();
 	
 }
+// 解决事件绑定兼容性问题
+var EventUtil = {
+	addHandler : function(elem,type,handler){
+		if(elem.addEventListener){
+			elem.addEventListener(type,handler,false);
+		}
+		else if(elem.attachEvent){
+			elem.attachEvent("on"+type,handler);
+		}
+		else{
+			elem["on"+type] = null;
+		}
+	},
+	removeHandler : function(elem,type,handler){
+		if(elem.removeEventListener){
+			elem.removeEventListener(type,handler,false);
+		}
+		else if(elem.detachEvent){
+			elem.detachEvent("on"+type,handler);
+		}
+		else{
+			elem["on"+type] = null;
+		}
+	}
+}
+		
 
 var Map = new Array();
 var posList = [0,9,3];
@@ -11,7 +37,7 @@ var gameTime = null;
 
 function BtnHandle(){
 	var btn = document.querySelector("button");
-	btn.onclick = readyToStart;
+	EventUtil.addHandler(btn,"click",readyToStart);
 }
 //倒计时 结束之后清空屏幕，创造表格；
 function readyToStart(){
@@ -41,7 +67,7 @@ function renderTable(){
 	var rows = Math.round((height-200)/cellHight);
 	var tbody = document.createElement("tbody");
 	var table = document.createElement("table");
-	table.style.cssText = "margin-top:100px;border-spacing:10px;";
+	table.style.cssText = "margin-top:100px;border-spacing:10px;margin-left:auto;margin-right:auto";
 	for(var i = 0;i<rows;i++){
 		var tr = document.createElement("tr");
 		tbody.appendChild(tr);
@@ -98,8 +124,8 @@ function posOut(){
 		cat.src = "cat.png";
 		td[pos].appendChild(cat);
 		var flag = false;
-		cat.addEventListener("click",Interval,false);//点击之后 猫猫下降；
-		cat.addEventListener("click",win,false);// 绑定中奖函数；
+		EventUtil.addHandler(cat,"click",Interval);//点击之后 猫猫下降；
+		EventUtil.addHandler(cat,"click",win);// 绑定中奖函数；
 		cat.grow = setInterval(growUpCat,2)
 	}
 	function growUpCat(){
@@ -148,7 +174,7 @@ function posOut(){
 	}
 	//中奖函数 产生随机数1~100 若小于等于10，则中奖，绘制红包
 	function win(){
-		cat.removeEventListener("click",win,false);
+		EventUtil.removeHandler(cat,"click",win); //移除绑定点击事件，每个猫猫只能点击一次；
 		var rand = Math.round(Math.random()*100);
 		console.log(rand);
 		if(rand<10){
@@ -178,7 +204,7 @@ function posOut(){
 					clearInterval(Coupon.grow);
 				}
 			}
-			Coupon.addEventListener("click",openCoupon,false);
+			EventUtil.addHandler(Coupon,"click",openCoupon);//红包点击打开
 			document.body.appendChild(Coupon);
 			console.log(CouponWidth,CouponHeight);
 			
