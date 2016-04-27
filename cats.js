@@ -1,6 +1,6 @@
 // JavaScript Document
 window.onload = function(){
-	BtnHandle();
+	init();
 	
 }
 // 解决事件绑定兼容性问题
@@ -34,20 +34,23 @@ var Map = new Array();
 var posList = [0,9,3];
 var countTime = null; 
 var gameTime = null;
+var readyTime = null;
 
-function BtnHandle(){
+function init(){
 	var btn = document.querySelector("button");
 	EventUtil.addHandler(btn,"click",readyToStart);
+	var closeBtn = document.getElementById("closeBtn");
+	EventUtil.addHandler(closeBtn,"click",closeGame);
 }
 //倒计时 结束之后清空屏幕，创造表格；
 function readyToStart(){
 	var counter = document.getElementById("counter").innerHTML.trim();
 	var list = null;
-	var timeCount = setInterval(function(){
+	readyTime = setInterval(function(){
 		counter --
 		document.getElementById("counter").innerHTML = counter;
 		if(counter == -1){
-			clearInterval(timeCount);
+			clearInterval(readyTime);
 			document.getElementById("container").innerHTML = "";
 			var progress = document.createElement("div");
 			renderTable();
@@ -165,7 +168,6 @@ function posOut(){
 			hole.style.width = width+"px";
 			hole.style.height = height+"px";
 			hole.style.opacity = opacity;
-			console.log(opacity);
 			if(width ==1){
 				clearInterval(hole.down);
 				td[pos].innerHTML = "";
@@ -194,9 +196,9 @@ function posOut(){
 			var CouponHeight = parseInt(Coupon.style.height);
 			var left = parseInt(Coupon.style.left);
 			function CouponCome(){
-				left = left - 0.5;
-				CouponWidth = CouponWidth+1;
-				CouponHeight = CouponHeight+1;
+				left = left - 1;
+				CouponWidth = CouponWidth+2;
+				CouponHeight = CouponHeight+2;
 				Coupon.style.width = CouponWidth+"px";
 				Coupon.style.height = CouponHeight+"px";
 				Coupon.style.left = left+"px";
@@ -206,7 +208,6 @@ function posOut(){
 			}
 			EventUtil.addHandler(Coupon,"click",openCoupon);//红包点击打开
 			document.body.appendChild(Coupon);
-			console.log(CouponWidth,CouponHeight);
 			
 		}
 			
@@ -224,6 +225,15 @@ function gameProgress(){
 		clearInterval(countTime);
 		clearInterval(gameTime);
 	}
+}
+
+
+//游戏关闭按钮
+function closeGame(){
+	clearInterval(readyTime);
+	clearInterval(countTime);
+	clearInterval(gameTime);
+	document.body.innerHTML = "";
 }
 
 

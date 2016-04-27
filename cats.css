@@ -32,6 +32,10 @@ body{
 	width:25%;
 	height:25px;
 }
-table{
-	border-spacing:5px;
+#closeBtn{	
+    position:absolute;
+	top:15px;
+	right:10px;
 }
+
+	
