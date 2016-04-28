@@ -34,13 +34,54 @@ var Map = new Array();   //随机数组来源（表格ID组成的数组）
 var posList = [0,9,3];  //初始化随机数组
 var countTime = null; //计算随机数intervalID
 var gameTime = null;  //计算游戏时间intervalID
-var readyTime = null;  //计算倒计时intervalID
+var readyTime = null;
+var rotateBtnCW = null;
+var rotateBtnACW = null;  //计算倒计时intervalID
+
+//创建Btn对象
+var Btn = {
+	closeBtn : document.getElementById("closeBtn"),
+	CW: function(){
+		degree = parseInt(closeBtn.style.transform.replace(/[^0-9]/ig,"")),
+	    degree += 1;
+	    closeBtn.style.transform = "rotate("+degree+"deg)";
+	    if(degree%180 == 0){
+		    clearInterval(rotateBtnCW);
+	     }
+      },
+	 ACW : function(){
+		 degree = parseInt(closeBtn.style.transform.replace(/[^0-9]/ig,""));
+		 if(degree == 0){
+			  closeBtn.style.transform = "rotate("+180+"deg)";
+		 }
+		 degree -=1;
+		 console.log(degree); 
+		 closeBtn.style.transform = "rotate("+degree+"deg)";
+		 if(degree%180 ==0 ){
+			clearInterval(rotateBtnACW);
+		 }
+	 },
+	 turnRight: function(){
+		 clearInterval(rotateBtnCW);
+		 clearInterval(rotateBtnACW);
+		 rotateBtnCW = setInterval(Btn.CW,1);
+	 },
+	 turnLeft : function(){
+		 clearInterval(rotateBtnCW);
+		 rotateBtnACW = setInterval(Btn.ACW,1);
+	 }		 
+}
+
 
 function init(){
 	var btn = document.querySelector("button");
 	EventUtil.addHandler(btn,"click",readyToStart);
 	var closeBtn = document.getElementById("closeBtn");
 	EventUtil.addHandler(closeBtn,"click",closeGame);
+	closeBtn.style.transform = "rotate(0deg)";
+	EventUtil.addHandler(closeBtn,"mouseover",Btn.turnRight);
+	//EventUtil.addHandler(closeBtn,"mouseover",Btn.turnLeft);
+	
 }
 //倒计时 结束之后清空屏幕，创造表格；
 function readyToStart(){
@@ -65,18 +106,17 @@ function renderTable(){
 	var width = document.documentElement.clientWidth;
 	var height = document.documentElement.clientHeight;
 	console.log(width,height);
-	var cellWidth = 100,cellHight = 100;
+	var cellWidth = 100,cellHeight = 100;
 	var cols = Math.round((width-200)/cellWidth);
-	var rows = Math.round((height-200)/cellHight);
+	var rows = Math.round((height-200)/cellHeight);
 	var tbody = document.createElement("tbody");
 	var table = document.createElement("table");
-	table.style.cssText = "margin-top:100px;border-spacing:10px;margin-left:auto;margin-right:auto";
 	for(var i = 0;i<rows;i++){
 		var tr = document.createElement("tr");
 		tbody.appendChild(tr);
 		for(var j = 0 ;j<cols;j++){
 			var td = document.createElement("td");
-			td.style.cssText = 'width:100px;height:100px;position:relative;overflow:hidden';
+			td.style.cssText = 'width:'+cellWidth+'px;height:'+cellHeight+'px;position:relative;overflow:hidden';
 			tr.appendChild(td);
 		}
 	}
@@ -103,7 +143,7 @@ function posOut(){
 	var td = document.getElementsByTagName("td");
 	var hole = document.createElement("div");
 	var cat = document.createElement("img");
-	hole.style.cssText = "position:absolute;height:1px;width:10px; border-radius:100px/30px;bottom:0;background-color:black;opacity:1;";
+	hole.style.cssText = "position:absolute;height:1px;width:10px; border-radius:100px/30px;bottom:0;background-color:black;opacity:0.1;";
 	//数组去重 
 	if(td[pos].firstChild==null){
 		td[pos].appendChild(hole);
@@ -113,10 +153,14 @@ function posOut(){
 	function holeGrowUp(){
 			var width = parseInt(hole.style.width);
 			var height = parseInt(hole.style.height);
+			var opacity = parseFloat(hole.style.opacity);
 			width = width+3;
 			height = height+1;
+			opacity = (opacity*100 + 3)/100;
+			hole.style.opacity = opacity;
 			hole.style.width = width+"px";
 			hole.style.height = height+"px";
+			console.log(opacity);
 			if(width == 100){
 				clearInterval(hole.growUp);
 				creatCat();
@@ -236,6 +280,8 @@ function closeGame(){
 	clearInterval(gameTime);
 	document.body.innerHTML = "";
 }
+
+
 
 
 	
