@@ -1,7 +1,7 @@
 // JavaScript Document
 window.onload = function(){
 	init();
-	
+	console.log(Btn.closeBtn);
 }
 // 解决事件绑定兼容性问题
 var EventUtil = {
@@ -34,34 +34,34 @@ var Map = new Array();   //随机数组来源（表格ID组成的数组）
 var posList = [0,9,3];  //初始化随机数组
 var countTime = null; //计算随机数intervalID
 var gameTime = null;  //计算游戏时间intervalID
-var readyTime = null;
+var readyTime = null; //计算倒计时intervalID
 var rotateBtnCW = null;
-var rotateBtnACW = null;  //计算倒计时intervalID
-
+var rotateBtnACW = null;
 //创建Btn对象
 var Btn = {
 	closeBtn : document.getElementById("closeBtn"),
-	CW: function(){
-		degree = parseInt(closeBtn.style.transform.replace(/[^0-9]/ig,"")),
+	CW : function(){
+		degree = parseInt(closeBtn.style.transform.replace(/[^0-9]/ig,""));
 	    degree += 1;
 	    closeBtn.style.transform = "rotate("+degree+"deg)";
 	    if(degree%180 == 0){
 		    clearInterval(rotateBtnCW);
 	     }
       },
-	 ACW : function(){
+	ACW : function(){
 		 degree = parseInt(closeBtn.style.transform.replace(/[^0-9]/ig,""));
+		 console.log(degree);
 		 if(degree == 0){
 			  closeBtn.style.transform = "rotate("+180+"deg)";
+			  console.log(degree);
 		 }
 		 degree -=1;
-		 console.log(degree); 
 		 closeBtn.style.transform = "rotate("+degree+"deg)";
 		 if(degree%180 ==0 ){
 			clearInterval(rotateBtnACW);
 		 }
 	 },
-	 turnRight: function(){
+	 turnRight : function(){
 		 clearInterval(rotateBtnCW);
 		 clearInterval(rotateBtnACW);
 		 rotateBtnCW = setInterval(Btn.CW,1);
@@ -69,7 +69,10 @@ var Btn = {
 	 turnLeft : function(){
 		 clearInterval(rotateBtnCW);
 		 rotateBtnACW = setInterval(Btn.ACW,1);
-	 }		 
+	 },	
+	 alerT : function(){
+		 console.log(Btn.turnLeft);
+	 }
 }
 
 
@@ -80,7 +83,7 @@ function init(){
 	EventUtil.addHandler(closeBtn,"click",closeGame);
 	closeBtn.style.transform = "rotate(0deg)";
 	EventUtil.addHandler(closeBtn,"mouseover",Btn.turnRight);
-	//EventUtil.addHandler(closeBtn,"mouseover",Btn.turnLeft);
+	EventUtil.addHandler(closeBtn,"mouseout",Btn.turnLeft);
 	
 }
 //倒计时 结束之后清空屏幕，创造表格；
@@ -123,13 +126,13 @@ function renderTable(){
 	table.appendChild(tbody);
 	document.getElementById("container").appendChild(table);
 	// 为表格单元格添加Id 
-	(function tableID(){
+	function tableID(){
 		var td = table.getElementsByTagName("td"),len = td.length;
 		for(var i = 0;i<len;i++){
 			td[i].id = i;
 			Map.push(i);
 		}
-	})();
+	};
 }
 
 //随机计算产生猫猫的td单元格Id
