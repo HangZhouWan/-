@@ -27,7 +27,7 @@ var EventUtil = {
 			elem["on"+type] = null;
 		}
 	}
-}
+};
 		
 
 var Map = new Array();   //随机数组来源（表格ID组成的数组）
@@ -73,7 +73,7 @@ var Btn = {
 	 alerT : function(){
 		 console.log(Btn.turnLeft);
 	 }
-}
+};
 
 
 function init(){
@@ -83,9 +83,8 @@ function init(){
 	EventUtil.addHandler(closeBtn,"click",closeGame);
 	closeBtn.style.transform = "rotate(0deg)";
 	EventUtil.addHandler(closeBtn,"mouseover",Btn.turnRight);
-	EventUtil.addHandler(closeBtn,"mouseout",Btn.turnLeft);
-	
-}
+	EventUtil.addHandler(closeBtn,"mouseout",Btn.turnLeft);	
+};
 //倒计时 结束之后清空屏幕，创造表格；
 function readyToStart(){
 	var counter = document.getElementById("counter").innerHTML.trim();
@@ -102,8 +101,7 @@ function readyToStart(){
 			gameTime = setInterval(gameProgress,200); //游戏计时
 		}
 	},1000);
-	
-}
+};
 //表格绘制，并将表格id加入Map数组
 function renderTable(){
 	var width = document.documentElement.clientWidth;
@@ -122,7 +120,7 @@ function renderTable(){
 			td.style.cssText = 'width:'+cellWidth+'px;height:'+cellHeight+'px;position:relative;overflow:hidden';
 			tr.appendChild(td);
 		}
-	}
+	};
 	table.appendChild(tbody);
 	document.getElementById("container").appendChild(table);
 	// 为表格单元格添加Id 
@@ -133,7 +131,8 @@ function renderTable(){
 			Map.push(i);
 		}
 	};
-}
+	tableID();
+};
 
 //随机计算产生猫猫的td单元格Id
 function posOut(){
@@ -141,17 +140,17 @@ function posOut(){
 	var condition = posList.indexOf(randomNum);
 	if(condition==-1){
 		posList.push(randomNum);
-	}
+	};
 	var pos = posList.shift();
 	var td = document.getElementsByTagName("td");
 	var hole = document.createElement("div");
 	var cat = document.createElement("img");
 	hole.style.cssText = "position:absolute;height:1px;width:10px; border-radius:100px/30px;bottom:0;background-color:black;opacity:0.1;";
-	//数组去重 
+	//去重 
 	if(td[pos].firstChild==null){
 		td[pos].appendChild(hole);
 		hole.growUp = setInterval(holeGrowUp,10);
-	}
+	};
 	//猫洞产生
 	function holeGrowUp(){
 			var width = parseInt(hole.style.width);
@@ -167,8 +166,8 @@ function posOut(){
 			if(width == 100){
 				clearInterval(hole.growUp);
 				creatCat();
-			}
-	}
+			};
+	};
 	//猫洞结束调用猫猫上升函数
 	function creatCat(){
 		cat.style.cssText = "position:absolute;bottom:-80px;left:20px;cursor:pointer;" 
@@ -178,7 +177,7 @@ function posOut(){
 		EventUtil.addHandler(cat,"click",catWait);//点击之后 猫猫下降；
 		EventUtil.addHandler(cat,"click",win);// 绑定中奖函数；
 		cat.grow = setInterval(growUpCat,2)
-	}
+	};
 	function growUpCat(){
 		var bottom =parseInt(cat.style.bottom);
 		bottom = bottom+1;
@@ -186,16 +185,16 @@ function posOut(){
 		if(bottom == 2){
 			clearInterval(cat.grow);
 			setTimeout(catWait,500);		
-		}
-	}
+		};
+	};
 	//等待0.5s 执行猫猫下降函数
 	function catWait(){
 		clearInterval(cat.grow);
 		if(cat.down){
 			clearInterval(cat.down);
-		}
+		};
 		cat.down = setInterval(catsDown,2);
-	}
+	};
 	function catsDown(){
 		var bottom =parseInt(cat.style.bottom);
 		bottom = bottom -1;
@@ -203,8 +202,8 @@ function posOut(){
 		if(bottom == -100){
 			clearInterval(cat.down);
 			hole.down = setInterval(holesDown,10);
-		}
-	}
+		};
+	};
 	//猫猫隐藏，执行猫洞收缩函数
 	function holesDown(){
 		var opacity = parseFloat(hole.style.opacity);
@@ -220,8 +219,8 @@ function posOut(){
 				clearInterval(hole.down);
 				td[pos].innerHTML = "";
 				posList.splice(pos,1);
-			}
-	}
+			};
+	};
 	//中奖函数 产生随机数1~100 若小于等于10，则中奖，绘制红包
 	function win(){
 		EventUtil.removeHandler(cat,"click",win); //移除绑定点击事件，每个猫猫只能点击一次；
@@ -238,7 +237,7 @@ function posOut(){
 			function openCoupon(){
 				Coupon.removeEventListener("click",openCoupon,false);
 				Coupon.grow = setInterval(CouponCome,5)
-			}
+			};
 			var CouponWidth = parseInt(Coupon.style.width);
 			var CouponHeight = parseInt(Coupon.style.height);
 			var left = parseInt(Coupon.style.left);
@@ -252,16 +251,15 @@ function posOut(){
 				if(CouponWidth==150){
 					console.log("中奖了！");
 	                clearInterval(Coupon.grow);
-				} 
-			}
+				}; 
+			};
 			EventUtil.addHandler(Coupon,"click",openCoupon);//红包点击打开
 			
-		}
+		};
 			
-    }
-
+    };
 	
-}
+};
 //游戏时间控制和进度条显示
 function gameProgress(){
 	var time = parseInt(document.getElementsByClassName("progress-bar")[0].style.width);
@@ -272,8 +270,8 @@ function gameProgress(){
 		clearInterval(countTime);
 		clearInterval(gameTime);
 		console.log("很遗憾，没中奖");
-	}
-}
+	};
+};
 
 
 //游戏关闭按钮
@@ -282,7 +280,7 @@ function closeGame(){
 	clearInterval(countTime);
 	clearInterval(gameTime);
 	document.body.innerHTML = "";
-}
+};
 
 
 
